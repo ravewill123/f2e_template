@@ -1,8 +1,9 @@
-const path = require('path');
-const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+const path = require('path'),
+  webpack = require('webpack'),
+  HtmlWebpackPlugin = require('html-webpack-plugin'),
+  ExtractTextPlugin = require('extract-text-webpack-plugin'),
+  CopyWebpackPlugin = require('copy-webpack-plugin'),
+  CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -44,8 +45,14 @@ module.exports = {
               limit: 2048,
               outputPath: "img/",
               context: path.resolve(__dirname, 'src/assets/img'),
-              name:  "[path][name].[ext]?[hash:5]" // fallback to file-loader.
+              name: "[path][name].[ext]?[hash:5]" // fallback to file-loader.
             }
+          },
+          {
+            loader: 'image-webpack-loader',
+            options: {
+              bypassOnDebug: true
+            },
           }
         ]
       }, {
@@ -74,16 +81,30 @@ module.exports = {
     ]
   },
   plugins: [
+    new CleanWebpackPlugin(['dist'],
+      {
+        root: __dirname,
+        verbose: true,
+        dry: false,
+        watch: false,
+        exclude: ['files', 'to', 'ignore'],
+        allowExternal: false,
+        beforeEmit: false
+      }),
     new HtmlWebpackPlugin({
       template: './src/index.html'
     }),
     new ExtractTextPlugin('css/style.css'),
-    new CopyWebpackPlugin([
+
+    /* ===========================================================================
+    *  If need to move assets files to dist folder without through any loaders.
+    *  =========================================================================== */
+    /* new CopyWebpackPlugin([
       {
         context: path.resolve(__dirname, 'src/assets'),
-        from: 'img/moved',
-        to: 'img'
+        from: '',
+        to: ''
       },
-    ])
+    ]) */
   ]
 };

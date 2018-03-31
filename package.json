@@ -1,5 +1,5 @@
 {
-  "name": "Project Name",
+  "name": "projectname",
   "version": "1.0.0",
   "main": "app.js",
   "author": "try&co",
@@ -29,6 +29,8 @@
     "webpack": "^3.3.0"
   },
   "dependencies": {
+    "clean-webpack-plugin": "^0.1.19",
+    "image-webpack-loader": "^4.2.0",
     "normalize-scss": "^7.0.0"
   }
 }
